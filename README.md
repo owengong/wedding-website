@@ -26,7 +26,7 @@ npm run seed              # demo guest list, optional
 npm start                 # http://localhost:4400
 ```
 
-`npm run dev` restarts on file changes.
+`npm run dev` restarts on file changes. Outside production, `/__preview?path=/&sizes=390x844,820x1180` shows any page at phone and tablet widths side by side.
 
 ## Make it yours
 
