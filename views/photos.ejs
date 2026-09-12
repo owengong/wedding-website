@@ -4,7 +4,7 @@
   <div class="gallery reveal" id="gallery">
     <% site.photos.forEach((p, i) => { %>
       <button class="gallery__item" type="button" data-index="<%= i %>" aria-label="Open photo <%= i + 1 %>">
-        <%- include('partials/photo', { src: p.src, alt: p.alt, cls: 'photo--gallery', label: String(i + 1).padStart(2, '0') }) %>
+        <%- include('partials/photo', { src: p.src, alt: p.alt, cls: 'photo--gallery', label: String(i + 1).padStart(2, '0'), eager: i < 6 }) %>
       </button>
     <% }) %>
   </div>

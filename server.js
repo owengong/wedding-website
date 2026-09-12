@@ -26,6 +26,17 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(SECRET));
 app.use(siteGate);
 
+// Dev-only: preview the site at phone and tablet widths in one page (media queries apply per iframe).
+if (process.env.NODE_ENV !== 'production') {
+  app.get('/__preview', (req, res) => {
+    const p = typeof req.query.path === 'string' && req.query.path.startsWith('/') ? req.query.path : '/';
+    const sizes = String(req.query.sizes || '390x844,820x1180').split(',').map((s) => s.split('x').map(Number)).filter((a) => a[0] > 0 && a[1] > 0);
+    const frames = sizes.map(([w, h]) => `<figure><figcaption>${w} × ${h}</figcaption><iframe src="${p.replace(/"/g, '')}" width="${w}" height="${h}" loading="eager"></iframe></figure>`).join('');
+    const zoom = Math.min(1, Math.max(0.25, Number(req.query.zoom) || 1));
+    res.send(`<!doctype html><title>Preview</title><style>body{margin:0;padding:24px;background:#555;display:flex;gap:32px;align-items:flex-start;font:12px system-ui;color:#eee;zoom:${zoom}}figure{margin:0}figcaption{margin-bottom:6px}iframe{border:0;background:#fff;box-shadow:0 8px 30px rgba(0,0,0,.4)}</style>${frames}`);
+  });
+}
+
 app.use('/', require('./src/routes/pages'));
 app.use('/rsvp', require('./src/routes/rsvp'));
 app.use('/admin', require('./src/routes/admin'));

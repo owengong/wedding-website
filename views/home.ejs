@@ -2,26 +2,26 @@
 <% const w = site.wedding; const pg = (site.pages && site.pages.home) || {}; const firstHotel = (site.travel.hotels || [])[0]; %>
 <section class="hero">
   <div class="hero__text">
-    <p class="eyebrow reveal"><%= site.hero.eyebrow %></p>
-    <h1 class="hero__names reveal">
+    <p class="eyebrow"><%= site.hero.eyebrow %></p>
+    <h1 class="hero__names">
       <span><%= site.couple.partner1.first %></span>
       <span class="amp">&amp;</span>
       <span><%= site.couple.partner2.first %></span>
     </h1>
-    <div class="rule reveal"></div>
-    <p class="hero__date reveal"><%= fmt.longDate(w.start) %></p>
-    <p class="hero__place reveal"><%= w.venue %> · <%= w.cityLine %></p>
-    <div class="countdown reveal" id="countdown" data-date="<%= w.start %>" hidden>
+    <div class="rule"></div>
+    <p class="hero__date"><%= fmt.longDate(w.start) %></p>
+    <p class="hero__place"><%= w.venue %> · <%= w.cityLine %></p>
+    <div class="countdown" id="countdown" data-date="<%= w.start %>" hidden>
       <div><b data-unit="days">0</b><span>days</span></div>
       <div><b data-unit="hours">0</b><span>hours</span></div>
       <div><b data-unit="minutes">0</b><span>minutes</span></div>
     </div>
-    <div class="hero__actions reveal">
+    <div class="hero__actions">
       <a class="btn" href="/rsvp">RSVP</a>
       <a class="btn btn--ghost" href="/schedule">The weekend</a>
     </div>
   </div>
-  <div class="hero__media reveal">
+  <div class="hero__media">
     <%- include('partials/photo', { src: site.hero.image, alt: site.hero.imageAlt, cls: 'photo--hero', label: fmt.monogram(), eager: true }) %>
   </div>
 </section>

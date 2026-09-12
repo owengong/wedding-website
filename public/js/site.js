@@ -28,16 +28,15 @@
     setInterval(tick, 30000);
   }
 
-  document.querySelectorAll('.hero .reveal').forEach((el, i) => { el.style.transitionDelay = `${i * 90}ms`; });
-  const reveals = [...document.querySelectorAll('.reveal')];
-  if ('IntersectionObserver' in window) {
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const below = [...document.querySelectorAll('.reveal')].filter((el) => el.getBoundingClientRect().top > window.innerHeight);
+  if (reduceMotion === false && 'IntersectionObserver' in window && below.length) {
+    below.forEach((el) => el.classList.add('reveal--pending'));
     const io = new IntersectionObserver((entries) => {
       for (const e of entries) {
-        if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); }
+        if (e.isIntersecting) { e.target.classList.remove('reveal--pending'); io.unobserve(e.target); }
       }
-    }, { rootMargin: '0px 0px -6% 0px', threshold: 0.05 });
-    reveals.forEach((el) => io.observe(el));
-  } else {
-    reveals.forEach((el) => el.classList.add('is-visible'));
+    }, { rootMargin: '0px 0px 20% 0px', threshold: 0.01 });
+    below.forEach((el) => io.observe(el));
   }
 })();
