@@ -29,7 +29,7 @@ app.use(siteGate);
 // Dev-only: preview the site at phone and tablet widths in one page (media queries apply per iframe).
 if (process.env.NODE_ENV !== 'production') {
   app.get('/__preview', (req, res) => {
-    const p = typeof req.query.path === 'string' && req.query.path.startsWith('/') ? req.query.path : '/';
+    const p = typeof req.query.path === 'string' && /^\/(?![\/\\])/.test(req.query.path) ? req.query.path : '/';
     const sizes = String(req.query.sizes || '390x844,820x1180').split(',').map((s) => s.split('x').map(Number)).filter((a) => a[0] > 0 && a[1] > 0);
     const frames = sizes.map(([w, h]) => `<figure><figcaption>${w} × ${h}</figcaption><iframe src="${p.replace(/"/g, '')}" width="${w}" height="${h}" loading="eager"></iframe></figure>`).join('');
     const zoom = Math.min(1, Math.max(0.25, Number(req.query.zoom) || 1));

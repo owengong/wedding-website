@@ -63,4 +63,4 @@ data/                SQLite file (gitignored)
 
 ## Going live later
 
-Any Node host with a persistent disk works. Set `SESSION_SECRET` and `ADMIN_PASSWORD`, mount `data/` on a volume, and put it behind HTTPS.
+Any Node host with a persistent disk works. Set `NODE_ENV=production`, `SESSION_SECRET`, and `ADMIN_PASSWORD`, mount `data/` on a volume, and put it behind HTTPS. Production mode turns off the preview route and turns on static asset caching.
