@@ -1,6 +1,6 @@
 <%- include('partials/head') %>
 <div class="wrap">
-  <%- include('partials/page-hero', { eyebrow: 'Wedding party', heading: 'The people standing with us' }) %>
+  <%- include('partials/page-hero', { eyebrow: 'Wedding party', heading: (site.pages && site.pages.party && site.pages.party.heading) || 'The people standing with us' }) %>
   <% const sides = [site.couple.partner1.first, site.couple.partner2.first]; %>
   <% for (const side of sides) { const people = site.party.filter(p => p.side === side); if (!people.length) continue; %>
     <h2 class="eyebrow eyebrow--section reveal">With <%= side %></h2>

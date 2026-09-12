@@ -31,7 +31,8 @@ router.get('/gate', (req, res) => {
 });
 
 router.post('/gate', (req, res) => {
-  const next = typeof req.body.next === 'string' && req.body.next.startsWith('/') ? req.body.next : '/';
+  // Only allow same-site paths: a leading slash that is not followed by another slash or backslash.
+  const next = typeof req.body.next === 'string' && /^\/(?![\/\\])/.test(req.body.next) ? req.body.next : '/';
   if (safeEqual(req.body.password || '', process.env.SITE_PASSWORD || '')) {
     res.cookie('gate', '1', cookieOpts);
     return res.redirect(next);

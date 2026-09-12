@@ -1,6 +1,6 @@
 <%- include('../partials/head') %>
 <div class="wrap wrap--narrow">
-  <%- include('../partials/page-hero', { eyebrow: 'RSVP', heading: closed ? 'RSVPs are closed' : 'Will you join us?', lede: closed ? `If your plans have changed, please write to us at ${site.rsvp.contactEmail}.` : `Please reply by ${fmt.dateOnly(site.rsvp.deadline)}. Enter the name of one member of your party to find your invitation.` }) %>
+  <%- include('../partials/page-hero', { eyebrow: 'RSVP', heading: closed ? 'RSVPs are closed' : ((site.pages && site.pages.rsvp && site.pages.rsvp.heading) || 'Will you join us?'), lede: closed ? `If your plans have changed, please write to us at ${site.rsvp.contactEmail}.` : `Please reply by ${fmt.dateOnly(site.rsvp.deadline)}. Enter the name of one member of your party to find your invitation.` }) %>
   <% if (!closed) { %>
   <form method="get" action="/rsvp" class="lookup reveal" role="search">
     <label class="field">

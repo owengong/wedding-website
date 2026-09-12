@@ -1,5 +1,5 @@
 <%- include('partials/head') %>
-<% const w = site.wedding; %>
+<% const w = site.wedding; const pg = (site.pages && site.pages.home) || {}; const firstHotel = (site.travel.hotels || [])[0]; %>
 <section class="hero">
   <div class="hero__text">
     <p class="eyebrow reveal"><%= site.hero.eyebrow %></p>
@@ -22,14 +22,14 @@
     </div>
   </div>
   <div class="hero__media reveal">
-    <%- include('partials/photo', { src: site.hero.image, alt: site.hero.imageAlt, cls: 'photo--hero', label: fmt.monogram() }) %>
+    <%- include('partials/photo', { src: site.hero.image, alt: site.hero.imageAlt, cls: 'photo--hero', label: fmt.monogram(), eager: true }) %>
   </div>
 </section>
 
 <section class="section section--alt">
   <div class="wrap">
     <p class="eyebrow center reveal">The day</p>
-    <h2 class="h2 center reveal">Saturday at Clermont</h2>
+    <h2 class="h2 center reveal"><%= pg.dayHeading || `${fmt.dayDate(w.start).split(',')[0]} at ${w.venue}` %></h2>
     <div class="details reveal">
       <% const ceremony = fmt.eventByKey('ceremony') || site.schedule[0]; const reception = fmt.eventByKey('reception'); %>
       <div class="detail">
@@ -47,7 +47,7 @@
       <div class="detail">
         <span class="detail__label">Dress</span>
         <span class="detail__big"><%= ceremony.dress %></span>
-        <span class="detail__sub">Outdoors on grass</span>
+        <% if (pg.dressNote) { %><span class="detail__sub"><%= pg.dressNote %></span><% } %>
       </div>
     </div>
     <div class="actions center reveal">
@@ -71,19 +71,21 @@
   <% } %>
 </section>
 
+<% if (site.travel && site.travel.hotels && site.travel.hotels.length) { %>
 <section class="section section--alt">
   <div class="wrap wrap--narrow center">
     <p class="eyebrow reveal">Where to stay</p>
-    <h2 class="h2 reveal">We have rooms held in Hudson</h2>
-    <p class="body reveal">Room blocks at two hotels on Warren Street, a short shuttle from the farm. Rates hold until <%= fmt.dateOnly(site.travel.hotels[0].deadline) %>.</p>
+    <h2 class="h2 reveal"><%= pg.stayHeading || 'Where to stay' %></h2>
+    <p class="body reveal"><%= pg.stayText || 'Hotel blocks and travel details are on the travel page.' %><% if (firstHotel && firstHotel.deadline) { %> Rates hold until <%= fmt.dateOnly(firstHotel.deadline) %>.<% } %></p>
     <a class="link reveal" href="/travel">Travel &amp; accommodations</a>
   </div>
 </section>
+<% } %>
 
 <section class="cta">
   <div class="wrap center">
     <p class="eyebrow reveal">Kindly reply by <%= fmt.dateOnly(site.rsvp.deadline) %></p>
-    <h2 class="display reveal">Will you join us?</h2>
+    <h2 class="display reveal"><%= (site.pages && site.pages.rsvp && site.pages.rsvp.heading) || 'Will you join us?' %></h2>
     <a class="btn reveal" href="/rsvp">RSVP</a>
   </div>
 </section>

@@ -1,6 +1,6 @@
 <%- include('partials/head') %>
 <div class="wrap wrap--narrow">
-  <%- include('partials/page-hero', { eyebrow: 'Q & A', heading: 'Good questions', lede: `Anything else? Write to us at ${site.rsvp.contactEmail}.` }) %>
+  <%- include('partials/page-hero', { eyebrow: 'Q & A', heading: (site.pages && site.pages.faq && site.pages.faq.heading) || 'Questions', lede: `Anything else? Write to us at ${site.rsvp.contactEmail}.` }) %>
   <div class="faq reveal">
     <% for (const f of site.faq) { %>
       <details class="faq__item">

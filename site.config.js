@@ -86,6 +86,24 @@ module.exports = {
     },
   ],
 
+  // Page headings and intros. Every line here has a sensible default. Delete a line to use it.
+  pages: {
+    home: {
+      dayHeading: 'Saturday at Clermont',
+      dressNote: 'Outdoors on grass',
+      stayHeading: 'We have rooms held in Hudson',
+      stayText: 'Room blocks at two hotels on Warren Street, a short shuttle from the farm.',
+    },
+    schedule: { heading: 'The weekend', lede: 'Three days in the Hudson Valley. Come for all of it or just the main event.' },
+    travel: { heading: 'Getting to Hudson', lede: 'Two hours north of the city along the river. Worth making a weekend of it.' },
+    story: { heading: 'How we got here' },
+    party: { heading: 'The people standing with us' },
+    registry: { heading: 'Gifts' },
+    faq: { heading: 'Good questions' },
+    photos: { heading: 'A few of our favorites' },
+    rsvp: { heading: 'Will you join us?' },
+  },
+
   story: {
     intro: 'Seven years, three cities, one very opinionated cat. This is the short version.',
     timeline: [

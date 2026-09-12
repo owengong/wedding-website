@@ -1,6 +1,6 @@
 <%- include('partials/head') %>
 <div class="wrap">
-  <%- include('partials/page-hero', { eyebrow: 'Our story', heading: 'How we got here', lede: site.story.intro }) %>
+  <%- include('partials/page-hero', { eyebrow: 'Our story', heading: (site.pages && site.pages.story && site.pages.story.heading) || 'How we got here', lede: site.story.intro }) %>
   <ol class="timeline">
     <% site.story.timeline.forEach((t, i) => { %>
       <li class="timeline__item reveal">

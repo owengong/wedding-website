@@ -1,7 +1,7 @@
 <%- include('partials/head') %>
 <% const t = site.travel; %>
 <div class="wrap">
-  <%- include('partials/page-hero', { eyebrow: 'Travel & stay', heading: 'Getting to Hudson', lede: 'Two hours north of the city along the river. Worth making a weekend of it.' }) %>
+  <%- include('partials/page-hero', { eyebrow: 'Travel & stay', heading: (site.pages && site.pages.travel && site.pages.travel.heading) || 'Travel & stay', lede: (site.pages && site.pages.travel && site.pages.travel.lede) || '' }) %>
 
   <section class="block reveal">
     <h2 class="eyebrow eyebrow--section">Getting there</h2>

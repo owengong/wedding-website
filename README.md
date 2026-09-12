@@ -30,7 +30,7 @@ npm start                 # http://localhost:4400
 
 ## Make it yours
 
-- **Content** is in `site.config.js`. Edit names, dates, venue, and every page's text there.
+- **Content** is in `site.config.js`. Names, dates, venue, page headings, and every page's text live there. Templates only hold generic labels such as "Schedule" and "RSVP".
 - **Photos** go in `public/images/`. Missing files fall back to a soft placeholder.
 - **Guest list** is managed in `/admin`. Add households by hand or paste a CSV at `/admin/import`.
 - **RSVP events** are the schedule entries with `rsvp: true`. Add `meal: true` to ask for an entrée.

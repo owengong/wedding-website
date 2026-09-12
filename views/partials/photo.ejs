@@ -1,5 +1,6 @@
-<%# Renders an image with a tonal fallback if the file is missing. Params: src, alt, cls, label %>
-<figure class="photo <%= typeof cls !== 'undefined' ? cls : '' %>">
-  <img src="<%= src %>" alt="<%= alt || '' %>" loading="lazy" onerror="this.parentNode.classList.add('photo--missing'); this.remove();">
+<%# Renders an image with a tonal fallback if the file is missing or not set. Params: src, alt, cls, label, eager %>
+<% const hasSrc = typeof src === 'string' && src.trim() !== ''; const isEager = typeof eager !== 'undefined' && eager; %>
+<figure class="photo <%= typeof cls !== 'undefined' ? cls : '' %><%= hasSrc ? '' : ' photo--missing' %>">
+  <% if (hasSrc) { %><img src="<%= src %>" alt="<%= alt || '' %>" loading="<%= isEager ? 'eager' : 'lazy' %>"<%- isEager ? ' fetchpriority="high"' : '' %> onerror="this.parentNode.classList.add('photo--missing'); this.remove();"><% } %>
   <span class="photo__fallback" aria-hidden="true"><%= typeof label !== 'undefined' ? label : '' %></span>
 </figure>

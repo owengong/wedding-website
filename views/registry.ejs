@@ -1,6 +1,6 @@
 <%- include('partials/head') %>
 <div class="wrap">
-  <%- include('partials/page-hero', { eyebrow: 'Registry', heading: 'Gifts', lede: site.registry.intro }) %>
+  <%- include('partials/page-hero', { eyebrow: 'Registry', heading: (site.pages && site.pages.registry && site.pages.registry.heading) || 'Gifts', lede: site.registry.intro }) %>
   <ul class="registries">
     <% for (const r of site.registry.links) { %>
       <li class="registry reveal">

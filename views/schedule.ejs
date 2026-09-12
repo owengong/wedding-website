@@ -1,6 +1,6 @@
 <%- include('partials/head') %>
 <div class="wrap">
-  <%- include('partials/page-hero', { eyebrow: 'Schedule', heading: 'The weekend', lede: 'Three days in the Hudson Valley. Come for all of it or just the main event.' }) %>
+  <%- include('partials/page-hero', { eyebrow: 'Schedule', heading: (site.pages && site.pages.schedule && site.pages.schedule.heading) || 'The weekend', lede: (site.pages && site.pages.schedule && site.pages.schedule.lede) || '' }) %>
   <% for (const day of fmt.scheduleByDay()) { %>
     <section class="day reveal">
       <h2 class="day__title"><%= day.day %></h2>

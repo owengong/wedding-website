@@ -1,6 +1,6 @@
 <%- include('partials/head') %>
 <div class="wrap">
-  <%- include('partials/page-hero', { eyebrow: 'Photos', heading: 'A few of our favorites' }) %>
+  <%- include('partials/page-hero', { eyebrow: 'Photos', heading: (site.pages && site.pages.photos && site.pages.photos.heading) || 'Photos' }) %>
   <div class="gallery reveal" id="gallery">
     <% site.photos.forEach((p, i) => { %>
       <button class="gallery__item" type="button" data-index="<%= i %>" aria-label="Open photo <%= i + 1 %>">
