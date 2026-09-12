@@ -1,0 +1,33 @@
+<%- include('_head') %>
+<div class="head"><h1>Import guests</h1></div>
+
+<% if (result) { %><p class="flash">Imported <%= result.created %> new household<%= result.created === 1 ? '' : 's' %><%= result.appended ? ` and added ${result.appended} guest(s) to existing households` : '' %>. <a href="/admin/guests">View guests</a></p><% } %>
+<% if (error) { %><p class="error"><%= error %></p><% } %>
+
+<div class="two">
+  <form method="post" action="/admin/import" class="card">
+    <h2>Paste CSV</h2>
+    <label class="field"><span>Or choose a file</span><input type="file" accept=".csv,text/csv" id="csvFile"></label>
+    <textarea class="input mono" name="csv" id="csvText" rows="14" placeholder="household,first_name,last_name,email,plus_ones,invited_events
+The Chen Family,Alice,Chen,alice@example.com,1,
+The Chen Family,Ben,Chen,,,
+Sam Rivera,Sam,Rivera,sam@example.com,1,ceremony;brunch"></textarea>
+    <div class="form__actions"><button class="btn" type="submit">Import</button></div>
+  </form>
+
+  <section class="card">
+    <h2>Format</h2>
+    <p>One row per guest. Rows with the same <code>household</code> are grouped into one invitation. Guests added to a household name that already exists are appended to it.</p>
+    <table class="table">
+      <tbody>
+        <tr><td><code>household</code></td><td>Required. Shown to guests as their party name.</td></tr>
+        <tr><td><code>first_name</code>, <code>last_name</code></td><td>Required first name; last name optional.</td></tr>
+        <tr><td><code>email</code></td><td>Optional. Taken from the first row of the household.</td></tr>
+        <tr><td><code>plus_ones</code></td><td>Optional. Number of unnamed guests the household may add.</td></tr>
+        <tr><td><code>invited_events</code></td><td>Optional. Semicolon-separated keys: <%- events.map(e => `<code>${e.key}</code>`).join(', ') %>. Blank means all.</td></tr>
+      </tbody>
+    </table>
+    <p class="muted small">Exports from this site re-import cleanly; extra columns are ignored.</p>
+  </section>
+</div>
+<%- include('_foot') %>

@@ -1,0 +1,56 @@
+<%- include('_head') %>
+<div class="head">
+  <h1>Dashboard</h1>
+  <p class="muted">Replies due <%= fmt.dateOnly(site.rsvp.deadline) %>.</p>
+</div>
+
+<div class="tiles">
+  <div class="tile"><span class="tile__n"><%= stats.responded %><small>/<%= stats.households %></small></span><span class="tile__l">Households replied</span></div>
+  <div class="tile"><span class="tile__n"><%= stats.pendingHouseholds %></span><span class="tile__l">Households pending</span></div>
+  <div class="tile"><span class="tile__n"><%= stats.guests %></span><span class="tile__l">Guests on the list</span></div>
+  <% const main = stats.perEvent.find(e => e.key === 'ceremony') || stats.perEvent[0]; if (main) { %>
+  <div class="tile tile--accent"><span class="tile__n"><%= main.yes %></span><span class="tile__l">Attending <%= main.name.toLowerCase() %></span></div>
+  <% } %>
+</div>
+
+<section class="card">
+  <h2>By event</h2>
+  <table class="table">
+    <thead><tr><th>Event</th><th class="num">Invited</th><th class="num">Yes</th><th class="num">No</th><th class="num">Pending</th><th style="width:30%">Response rate</th></tr></thead>
+    <tbody>
+      <% for (const e of stats.perEvent) { const pct = e.invited ? Math.round(((e.yes + e.no) / e.invited) * 100) : 0; %>
+        <tr>
+          <td><%= e.name %></td>
+          <td class="num"><%= e.invited %></td>
+          <td class="num yes"><%= e.yes %></td>
+          <td class="num no"><%= e.no %></td>
+          <td class="num muted"><%= e.pending %></td>
+          <td><div class="meter"><span style="width: <%= pct %>%"></span></div><small class="muted"><%= pct %>%</small></td>
+        </tr>
+      <% } %>
+    </tbody>
+  </table>
+</section>
+
+<div class="two">
+  <section class="card">
+    <h2>Entrées</h2>
+    <% if (stats.meals.every(m => !m.count)) { %><p class="muted">No entrée selections yet.</p><% } else { %>
+    <table class="table">
+      <tbody>
+        <% for (const m of stats.meals) { %><tr><td><%= m.name %></td><td class="num"><%= m.count %></td></tr><% } %>
+      </tbody>
+    </table>
+    <% } %>
+  </section>
+
+  <section class="card">
+    <h2>Dietary notes</h2>
+    <% if (!stats.dietary.length) { %><p class="muted">None reported.</p><% } else { %>
+    <ul class="list">
+      <% for (const d of stats.dietary) { %><li><b><%= d.name %></b> <span class="muted">(<%= d.household %>)</span><br><%= d.note %></li><% } %>
+    </ul>
+    <% } %>
+  </section>
+</div>
+<%- include('_foot') %>

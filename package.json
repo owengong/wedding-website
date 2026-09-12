@@ -1,0 +1,19 @@
+{
+  "name": "wedding-website",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A clean, self-hosted wedding website with RSVP and guest management.",
+  "main": "server.js",
+  "engines": { "node": ">=22.13" },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "seed": "node scripts/seed.js"
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0"
+  }
+}

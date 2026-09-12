@@ -1,0 +1,74 @@
+<%- include('_head') %>
+<%
+  const v = values || household || {};
+  const invited = values ? values.invited_events : (household ? household.invited_events : events.map(e => e.key));
+  const guestRows = (values && values.guests && values.guests.length) ? values.guests : (household ? household.guests : [{ first_name: '', last_name: '' }]);
+%>
+<div class="head">
+  <h1><%= household ? household.name : 'Add household' %></h1>
+  <% if (household) { %><a class="btn btn--ghost" href="/rsvp/<%= household.code %>" target="_blank" rel="noopener">Open RSVP ↗</a><% } %>
+</div>
+<% if (typeof flash !== 'undefined' && flash) { %><p class="flash"><%= flash %></p><% } %>
+<% if (error) { %><p class="error"><%= error %></p><% } %>
+
+<form method="post" action="<%= household ? `/admin/households/${household.id}` : '/admin/households' %>" class="form">
+  <section class="card">
+    <h2>Household</h2>
+    <div class="grid">
+      <label class="field"><span>Household name</span><input class="input" name="name" value="<%= v.name || '' %>" placeholder="The Chen Family" required></label>
+      <label class="field"><span>Email</span><input class="input" type="email" name="email" value="<%= v.email || '' %>"></label>
+      <label class="field"><span>Plus-ones allowed</span><input class="input" type="number" min="0" max="10" name="plus_ones" value="<%= v.plus_ones ?? 0 %>"></label>
+    </div>
+    <div class="field">
+      <span>Invited to</span>
+      <div class="checks">
+        <% for (const e of events) { %>
+          <label><input type="checkbox" name="invited_events" value="<%= e.key %>" <%= invited.includes(e.key) ? 'checked' : '' %>> <%= e.name %></label>
+        <% } %>
+      </div>
+    </div>
+    <label class="field"><span>Private notes</span><textarea class="input" name="notes" rows="2"><%= v.notes || '' %></textarea></label>
+  </section>
+
+  <section class="card">
+    <h2>Guests</h2>
+    <div class="guest-rows" id="guestRows">
+      <% for (const g of guestRows) { %>
+        <div class="guest-row">
+          <input type="hidden" name="guest_id" value="<%= g.id || '' %>">
+          <input type="hidden" name="guest_plus" value="<%= g.is_plus_one ? '1' : '0' %>">
+          <input class="input" name="guest_first" value="<%= g.first_name || '' %>" placeholder="First name" aria-label="First name">
+          <input class="input" name="guest_last" value="<%= g.last_name || '' %>" placeholder="Last name" aria-label="Last name">
+          <button type="button" class="icon" data-remove-row aria-label="Remove guest">×</button>
+        </div>
+      <% } %>
+    </div>
+    <template id="guestRowTpl">
+      <div class="guest-row">
+        <input type="hidden" name="guest_id" value="">
+        <input type="hidden" name="guest_plus" value="0">
+        <input class="input" name="guest_first" placeholder="First name" aria-label="First name">
+        <input class="input" name="guest_last" placeholder="Last name" aria-label="Last name">
+        <button type="button" class="icon" data-remove-row aria-label="Remove guest">×</button>
+      </div>
+    </template>
+    <button type="button" class="btn btn--ghost" id="addGuestRow">+ Add guest</button>
+    <p class="muted small">Removing a guest here also removes their RSVP.</p>
+  </section>
+
+  <div class="form__actions">
+    <button class="btn" type="submit">Save</button>
+    <a class="btn btn--ghost" href="/admin/guests">Back to guests</a>
+  </div>
+</form>
+
+<% if (household) { %>
+  <details class="danger">
+    <summary>Delete this household</summary>
+    <form method="post" action="/admin/households/<%= household.id %>/delete">
+      <p class="muted">This removes <%= household.name %>, all <%= household.guests.length %> guests, and their responses. There is no undo.</p>
+      <button class="btn btn--danger" type="submit">Delete household</button>
+    </form>
+  </details>
+<% } %>
+<%- include('_foot') %>

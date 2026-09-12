@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin · <%= fmt.coupleNames() %></title>
+<meta name="robots" content="noindex">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/admin.css?v=<%= v %>">
+</head>
+<body class="login">
+<main class="login__card">
+  <p class="eyebrow">Admin</p>
+  <h1><%= fmt.coupleNames() %></h1>
+  <% if (!configured) { %>
+    <p class="warn">Set <code>ADMIN_PASSWORD</code> in <code>.env</code> and restart the server to enable admin access.</p>
+  <% } else { %>
+    <form method="post" action="/admin/login">
+      <input class="input" type="password" name="password" placeholder="Password" autofocus required>
+      <button class="btn" type="submit">Sign in</button>
+    </form>
+    <% if (error) { %><p class="error"><%= error %></p><% } %>
+  <% } %>
+  <a class="back" href="/">← Back to site</a>
+</main>
+</body>
+</html>

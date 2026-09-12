@@ -1,0 +1,5 @@
+<%# Renders an image with a tonal fallback if the file is missing. Params: src, alt, cls, label %>
+<figure class="photo <%= typeof cls !== 'undefined' ? cls : '' %>">
+  <img src="<%= src %>" alt="<%= alt || '' %>" loading="lazy" onerror="this.parentNode.classList.add('photo--missing'); this.remove();">
+  <span class="photo__fallback" aria-hidden="true"><%= typeof label !== 'undefined' ? label : '' %></span>
+</figure>

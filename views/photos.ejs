@@ -1,0 +1,18 @@
+<%- include('partials/head') %>
+<div class="wrap">
+  <%- include('partials/page-hero', { eyebrow: 'Photos', heading: 'A few of our favorites' }) %>
+  <div class="gallery reveal" id="gallery">
+    <% site.photos.forEach((p, i) => { %>
+      <button class="gallery__item" type="button" data-index="<%= i %>" aria-label="Open photo <%= i + 1 %>">
+        <%- include('partials/photo', { src: p.src, alt: p.alt, cls: 'photo--gallery', label: String(i + 1).padStart(2, '0') }) %>
+      </button>
+    <% }) %>
+  </div>
+</div>
+<div class="lightbox" id="lightbox" hidden>
+  <button class="lightbox__close" type="button" aria-label="Close">×</button>
+  <button class="lightbox__prev" type="button" aria-label="Previous">‹</button>
+  <figure><img alt=""><figcaption></figcaption></figure>
+  <button class="lightbox__next" type="button" aria-label="Next">›</button>
+</div>
+<%- include('partials/foot', { extraScript: '/js/gallery.js' }) %>

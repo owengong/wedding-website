@@ -1,0 +1,63 @@
+<%- include('partials/head') %>
+<% const t = site.travel; %>
+<div class="wrap">
+  <%- include('partials/page-hero', { eyebrow: 'Travel & stay', heading: 'Getting to Hudson', lede: 'Two hours north of the city along the river. Worth making a weekend of it.' }) %>
+
+  <section class="block reveal">
+    <h2 class="eyebrow eyebrow--section">Getting there</h2>
+    <div class="cols">
+      <% for (const g of t.gettingThere) { %>
+        <div class="col">
+          <h3 class="h4"><%= g.name %></h3>
+          <p class="body"><%= g.text %></p>
+        </div>
+      <% } %>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <h2 class="eyebrow eyebrow--section">Where to stay</h2>
+    <ul class="hotels">
+      <% for (const h of t.hotels) { %>
+        <li class="hotel">
+          <div class="hotel__head">
+            <h3 class="h4"><%= h.name %></h3>
+            <span class="hotel__addr"><%= h.address %></span>
+          </div>
+          <p class="body"><%= h.note %></p>
+          <div class="hotel__meta">
+            <% if (h.blockCode) { %><span>Block code <b><%= h.blockCode %></b></span><% } %>
+            <% if (h.deadline) { %><span>Book by <%= fmt.dateOnly(h.deadline) %></span><% } %>
+            <% if (h.url) { %><a class="link" href="<%= h.url %>" target="_blank" rel="noopener">Book ↗</a><% } %>
+          </div>
+        </li>
+      <% } %>
+    </ul>
+  </section>
+
+  <section class="block reveal">
+    <h2 class="eyebrow eyebrow--section">Getting around</h2>
+    <p class="body wrap--narrow"><%= t.gettingAround %></p>
+  </section>
+
+  <section class="block reveal">
+    <h2 class="eyebrow eyebrow--section">While you're in town</h2>
+    <ul class="todo">
+      <% for (const x of t.thingsToDo) { %>
+        <li>
+          <h3 class="h4"><% if (x.url) { %><a href="<%= x.url %>" target="_blank" rel="noopener"><%= x.name %></a><% } else { %><%= x.name %><% } %></h3>
+          <p class="body"><%= x.text %></p>
+        </li>
+      <% } %>
+    </ul>
+  </section>
+
+  <section class="block reveal">
+    <h2 class="eyebrow eyebrow--section">The venue</h2>
+    <div class="map">
+      <iframe title="Map to <%= site.wedding.venue %>" src="<%= fmt.mapsEmbedUrl(site.wedding.mapsQuery) %>" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+    </div>
+    <p class="body center"><%= site.wedding.venue %> · <%= site.wedding.address %> · <a class="link" href="<%= fmt.mapsUrl(site.wedding.mapsQuery) %>" target="_blank" rel="noopener">Open in Maps ↗</a></p>
+  </section>
+</div>
+<%- include('partials/foot') %>

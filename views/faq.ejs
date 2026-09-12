@@ -1,0 +1,13 @@
+<%- include('partials/head') %>
+<div class="wrap wrap--narrow">
+  <%- include('partials/page-hero', { eyebrow: 'Q & A', heading: 'Good questions', lede: `Anything else? Write to us at ${site.rsvp.contactEmail}.` }) %>
+  <div class="faq reveal">
+    <% for (const f of site.faq) { %>
+      <details class="faq__item">
+        <summary><span><%= f.q %></span><i aria-hidden="true"></i></summary>
+        <p class="body"><%= f.a %></p>
+      </details>
+    <% } %>
+  </div>
+</div>
+<%- include('partials/foot') %>

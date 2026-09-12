@@ -1,0 +1,17 @@
+<%- include('partials/head') %>
+<div class="wrap">
+  <%- include('partials/page-hero', { eyebrow: 'Registry', heading: 'Gifts', lede: site.registry.intro }) %>
+  <ul class="registries">
+    <% for (const r of site.registry.links) { %>
+      <li class="registry reveal">
+        <a href="<%= r.url %>" target="_blank" rel="noopener">
+          <span class="registry__mark"><%= r.name[0] %></span>
+          <span class="registry__name"><%= r.name %></span>
+          <span class="registry__note"><%= r.note %></span>
+          <span class="registry__go">Visit ↗</span>
+        </a>
+      </li>
+    <% } %>
+  </ul>
+</div>
+<%- include('partials/foot') %>

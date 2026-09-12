@@ -1,0 +1,128 @@
+<%- include('../partials/head') %>
+<%
+  const val = (name, fallback) => (values && values[name] !== undefined ? values[name] : fallback);
+  const savedAnswer = (g, key) => (g.rsvps[key] === 1 ? 'yes' : g.rsvps[key] === 0 ? 'no' : '');
+  const mealEventKeys = events.filter(e => e.meal).map(e => e.key);
+  const guestName = (g) => `${g.first_name} ${g.last_name}`.trim();
+%>
+<div class="wrap wrap--narrow">
+  <section class="page-hero page-hero--tight">
+    <p class="eyebrow">RSVP</p>
+    <h1 class="display"><%= household.name %></h1>
+    <p class="lede"><%= household.responded_at ? 'You’ve already replied. Feel free to make changes below.' : 'Let us know who’s coming to what.' %></p>
+  </section>
+
+  <% if (errors.length) { %>
+    <div class="notice notice--error" role="alert">
+      <ul><% for (const e of errors) { %><li><%= e %></li><% } %></ul>
+    </div>
+  <% } %>
+
+  <form method="post" action="/rsvp/<%= household.code %>" class="rsvp" id="rsvpForm" novalidate>
+    <% household.guests.forEach((g) => { %>
+      <fieldset class="guest" data-guest="<%= g.id %>">
+        <% if (g.is_plus_one) { %>
+          <legend class="guest__name">Guest of <%= household.name %></legend>
+          <div class="grid-2">
+            <label class="field"><span class="field__label">First name</span><input class="input" name="first_<%= g.id %>" value="<%= val(`first_${g.id}`, g.first_name) %>"></label>
+            <label class="field"><span class="field__label">Last name</span><input class="input" name="last_<%= g.id %>" value="<%= val(`last_${g.id}`, g.last_name) %>"></label>
+          </div>
+          <p class="hint">Clear the name to remove this guest.</p>
+        <% } else { %>
+          <legend class="guest__name"><%= guestName(g) %></legend>
+        <% } %>
+
+        <% for (const ev of events) { const name = `attending_${g.id}_${ev.key}`; const cur = val(name, savedAnswer(g, ev.key)); %>
+          <div class="row">
+            <div class="row__event">
+              <span class="row__name"><%= ev.name %></span>
+              <span class="row__when"><%= fmt.dayDate(ev.start) %> · <%= fmt.time(ev.start) %></span>
+            </div>
+            <div class="seg" role="radiogroup" aria-label="<%= ev.name %>">
+              <label><input type="radio" name="<%= name %>" value="yes" data-meal-event="<%= ev.meal ? '1' : '' %>" <%= cur === 'yes' ? 'checked' : '' %>><span>Accepts</span></label>
+              <label><input type="radio" name="<%= name %>" value="no" <%= cur === 'no' ? 'checked' : '' %>><span>Declines</span></label>
+            </div>
+          </div>
+        <% } %>
+
+        <% if (mealEventKeys.length) { %>
+          <div class="extra" data-meal-block>
+            <label class="field">
+              <span class="field__label">Entrée</span>
+              <select class="input" name="meal_<%= g.id %>">
+                <option value="">Choose one</option>
+                <% for (const m of mealOptions) { %><option value="<%= m %>" <%= val(`meal_${g.id}`, g.meal || '') === m ? 'selected' : '' %>><%= m %></option><% } %>
+              </select>
+            </label>
+          </div>
+        <% } %>
+        <label class="field">
+          <span class="field__label">Dietary restrictions or allergies <em>optional</em></span>
+          <input class="input" name="dietary_<%= g.id %>" value="<%= val(`dietary_${g.id}`, g.dietary || '') %>">
+        </label>
+      </fieldset>
+    <% }) %>
+
+    <% for (let n = 0; n < openSlots; n++) { %>
+      <fieldset class="guest guest--plusone" data-plusone="<%= n %>">
+        <legend class="guest__name">Bringing a guest?</legend>
+        <p class="hint">Your invitation includes <%= openSlots === 1 ? 'a guest' : `up to ${openSlots} guests` %>. Leave blank if it’s just you.</p>
+        <div class="grid-2">
+          <label class="field"><span class="field__label">First name</span><input class="input" name="plusone_first_<%= n %>" value="<%= val(`plusone_first_${n}`, '') %>" data-plusone-name></label>
+          <label class="field"><span class="field__label">Last name</span><input class="input" name="plusone_last_<%= n %>" value="<%= val(`plusone_last_${n}`, '') %>"></label>
+        </div>
+        <div class="plusone-detail" data-plusone-detail>
+          <% for (const ev of events) { const name = `plusone_attending_${n}_${ev.key}`; const cur = val(name, ''); %>
+            <div class="row">
+              <div class="row__event">
+                <span class="row__name"><%= ev.name %></span>
+                <span class="row__when"><%= fmt.dayDate(ev.start) %> · <%= fmt.time(ev.start) %></span>
+              </div>
+              <div class="seg" role="radiogroup" aria-label="<%= ev.name %>">
+                <label><input type="radio" name="<%= name %>" value="yes" data-meal-event="<%= ev.meal ? '1' : '' %>" <%= cur === 'yes' ? 'checked' : '' %>><span>Accepts</span></label>
+                <label><input type="radio" name="<%= name %>" value="no" <%= cur === 'no' ? 'checked' : '' %>><span>Declines</span></label>
+              </div>
+            </div>
+          <% } %>
+          <% if (mealEventKeys.length) { %>
+            <div class="extra" data-meal-block>
+              <label class="field">
+                <span class="field__label">Entrée</span>
+                <select class="input" name="plusone_meal_<%= n %>">
+                  <option value="">Choose one</option>
+                  <% for (const m of mealOptions) { %><option value="<%= m %>" <%= val(`plusone_meal_${n}`, '') === m ? 'selected' : '' %>><%= m %></option><% } %>
+                </select>
+              </label>
+            </div>
+          <% } %>
+          <label class="field">
+            <span class="field__label">Dietary restrictions or allergies <em>optional</em></span>
+            <input class="input" name="plusone_dietary_<%= n %>" value="<%= val(`plusone_dietary_${n}`, '') %>">
+          </label>
+        </div>
+      </fieldset>
+    <% } %>
+
+    <fieldset class="guest guest--household">
+      <legend class="guest__name">A few more things</legend>
+      <label class="field">
+        <span class="field__label">Email <em>so we can send updates</em></span>
+        <input class="input" type="email" name="email" value="<%= val('email', household.email || '') %>" autocomplete="email">
+      </label>
+      <label class="field">
+        <span class="field__label">A song that will get you on the dance floor <em>optional</em></span>
+        <input class="input" name="song_request" value="<%= val('song_request', household.song_request || '') %>">
+      </label>
+      <label class="field">
+        <span class="field__label">Anything else? <em>optional</em></span>
+        <textarea class="input" name="message" rows="3"><%= val('message', household.message || '') %></textarea>
+      </label>
+    </fieldset>
+
+    <div class="actions">
+      <button class="btn btn--lg" type="submit"><%= household.responded_at ? 'Update my response' : 'Send my response' %></button>
+      <a class="link" href="/rsvp">Not you?</a>
+    </div>
+  </form>
+</div>
+<%- include('../partials/foot', { extraScript: '/js/rsvp.js' }) %>

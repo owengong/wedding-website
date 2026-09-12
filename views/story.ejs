@@ -1,0 +1,19 @@
+<%- include('partials/head') %>
+<div class="wrap">
+  <%- include('partials/page-hero', { eyebrow: 'Our story', heading: 'How we got here', lede: site.story.intro }) %>
+  <ol class="timeline">
+    <% site.story.timeline.forEach((t, i) => { %>
+      <li class="timeline__item reveal">
+        <div class="timeline__media">
+          <% if (t.image) { %><%- include('partials/photo', { src: t.image, alt: t.title, cls: 'photo--story', label: String(i + 1).padStart(2, '0') }) %><% } %>
+        </div>
+        <div class="timeline__text">
+          <p class="eyebrow"><%= t.date %></p>
+          <h2 class="h3"><%= t.title %></h2>
+          <p class="body"><%= t.text %></p>
+        </div>
+      </li>
+    <% }) %>
+  </ol>
+</div>
+<%- include('partials/foot') %>

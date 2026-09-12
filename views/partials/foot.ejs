@@ -1,0 +1,19 @@
+</main>
+<footer class="footer">
+  <div class="footer__inner">
+    <div class="footer__names"><%= fmt.coupleNames() %></div>
+    <div class="footer__meta"><%= fmt.longDate(site.wedding.start) %> · <%= site.wedding.cityLine %></div>
+    <% if (site.hashtag) { %><div class="footer__tag"><%= site.hashtag %></div><% } %>
+    <ul class="footer__links">
+      <li><a href="/schedule">Schedule</a></li>
+      <li><a href="/travel">Travel</a></li>
+      <li><a href="/registry">Registry</a></li>
+      <li><a href="/faq">Q&A</a></li>
+      <li><a href="/rsvp">RSVP</a></li>
+    </ul>
+  </div>
+</footer>
+<script src="/js/site.js?v=<%= v %>" defer></script>
+<% if (typeof extraScript !== 'undefined' && extraScript) { %><script src="<%= extraScript %>?v=<%= v %>" defer></script><% } %>
+</body>
+</html>

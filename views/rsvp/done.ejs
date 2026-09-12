@@ -1,0 +1,35 @@
+<%- include('../partials/head') %>
+<% const anyYes = household.guests.some(g => Object.values(g.rsvps).includes(1)); %>
+<div class="wrap wrap--narrow">
+  <section class="page-hero page-hero--tight center">
+    <p class="eyebrow">Thank you</p>
+    <h1 class="display"><%= anyYes ? 'We can’t wait to see you' : 'We’ll miss you' %></h1>
+    <p class="lede"><%= anyYes ? `Your response is saved. Here’s what we have for ${household.name}.` : 'Thank you for letting us know. You’ll be with us in spirit.' %></p>
+  </section>
+
+  <div class="summary reveal">
+    <table>
+      <thead>
+        <tr><th></th><% for (const ev of events) { %><th><%= ev.name %></th><% } %><th>Entrée</th></tr>
+      </thead>
+      <tbody>
+        <% for (const g of household.guests) { %>
+          <tr>
+            <td><%= `${g.first_name} ${g.last_name}`.trim() %></td>
+            <% for (const ev of events) { const a = g.rsvps[ev.key]; %>
+              <td class="<%= a === 1 ? 'yes' : a === 0 ? 'no' : '' %>"><%= a === 1 ? 'Accepts' : a === 0 ? 'Declines' : '—' %></td>
+            <% } %>
+            <td><%= g.meal || '—' %></td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="actions center" style="margin-top: 2.5rem">
+    <% if (anyYes) { %><a class="btn btn--outline" href="/calendar.ics">Add to calendar</a><% } %>
+    <a class="btn btn--ghost" href="/rsvp/<%= household.code %>">Edit response</a>
+    <% if (anyYes) { %><a class="btn btn--ghost" href="/travel">Where to stay</a><% } %>
+  </div>
+</div>
+<%- include('../partials/foot') %>

@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title><%= fmt.coupleNames() %></title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400&family=Jost:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/site.css?v=<%= v %>">
+</head>
+<body class="page-gate">
+<main class="gate">
+  <p class="eyebrow"><%= fmt.longDate(site.wedding.start) %></p>
+  <h1 class="display"><%= fmt.coupleNames() %></h1>
+  <p class="body">Please enter the password from your invitation.</p>
+  <form method="post" action="/gate" class="gate__form">
+    <input type="hidden" name="next" value="<%= next %>">
+    <input class="input" type="password" name="password" placeholder="Password" autofocus required>
+    <button class="btn" type="submit">Enter</button>
+  </form>
+  <% if (error) { %><p class="form-error"><%= error %></p><% } %>
+</main>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<%- include('partials/head') %>
+<div class="wrap">
+  <%- include('partials/page-hero', { eyebrow: 'Schedule', heading: 'The weekend', lede: 'Three days in the Hudson Valley. Come for all of it or just the main event.' }) %>
+  <% for (const day of fmt.scheduleByDay()) { %>
+    <section class="day reveal">
+      <h2 class="day__title"><%= day.day %></h2>
+      <ol class="events">
+        <% for (const ev of day.events) { %>
+          <li class="event">
+            <div class="event__time"><%= fmt.timeRange(ev.start, ev.end) %></div>
+            <div class="event__body">
+              <h3 class="event__name"><%= ev.name %></h3>
+              <p class="event__where">
+                <a href="<%= fmt.mapsUrl(ev.mapsQuery || ev.address) %>" target="_blank" rel="noopener"><%= ev.venue %></a>
+                <span class="event__addr"><%= ev.address %></span>
+              </p>
+              <% if (ev.description) { %><p class="event__desc"><%= ev.description %></p><% } %>
+              <% if (ev.dress) { %><p class="event__dress">Dress: <%= ev.dress %></p><% } %>
+            </div>
+          </li>
+        <% } %>
+      </ol>
+    </section>
+  <% } %>
+  <div class="actions actions--end center reveal">
+    <a class="btn btn--outline" href="/calendar.ics">Add the wedding to your calendar</a>
+  </div>
+</div>
+<%- include('partials/foot') %>

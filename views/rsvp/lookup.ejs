@@ -1,0 +1,30 @@
+<%- include('../partials/head') %>
+<div class="wrap wrap--narrow">
+  <%- include('../partials/page-hero', { eyebrow: 'RSVP', heading: closed ? 'RSVPs are closed' : 'Will you join us?', lede: closed ? `If your plans have changed, please write to us at ${site.rsvp.contactEmail}.` : `Please reply by ${fmt.dateOnly(site.rsvp.deadline)}. Enter the name of one member of your party to find your invitation.` }) %>
+  <% if (!closed) { %>
+  <form method="get" action="/rsvp" class="lookup reveal" role="search">
+    <label class="field">
+      <span class="field__label">Your full name</span>
+      <input class="input input--lg" type="text" name="q" value="<%= q %>" placeholder="e.g. Alice Chen" autocomplete="name" autofocus required minlength="2">
+    </label>
+    <button class="btn" type="submit">Find my invitation</button>
+  </form>
+
+  <% if (results && results.length === 0) { %>
+    <div class="notice">
+      <p>We couldn’t find <b><%= q %></b>. Try the name exactly as it appears on your invitation, or just a last name.</p>
+      <p>Still stuck? Email us at <a class="link" href="mailto:<%= site.rsvp.contactEmail %>"><%= site.rsvp.contactEmail %></a> and we’ll sort it out.</p>
+    </div>
+  <% } else if (results && results.length > 1) { %>
+    <div class="notice">
+      <p>We found a few parties. Which one is yours?</p>
+      <ul class="choices">
+        <% for (const h of results) { %>
+          <li><a href="/rsvp/<%= h.code %>"><b><%= h.name %></b><span><%= h.guests.map(g => `${g.first_name} ${g.last_name}`.trim()).join(', ') %></span></a></li>
+        <% } %>
+      </ul>
+    </div>
+  <% } %>
+  <% } %>
+</div>
+<%- include('../partials/foot') %>
